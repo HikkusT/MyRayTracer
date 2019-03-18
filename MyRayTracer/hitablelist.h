@@ -5,10 +5,10 @@ class HitableList : public Hitable
 {
 public:
 	Hitable **list;
-	int listSize;
+	int list_size;
 
 	HitableList() {}
-	HitableList(Hitable **l, int n) : list(l), listSize(n) {}
+	HitableList(Hitable **l, int n) : list(l), list_size(n) {}
 
 	virtual bool hit(const Ray &ray, float t_min, float t_max, HitRecord &record) const;
 };
@@ -18,7 +18,7 @@ bool HitableList::hit(const Ray &ray, float t_min, float t_max, HitRecord &recor
 	HitRecord temp_rec;
 	bool hit_anything = false;
 	float closest_so_far = t_max;
-	for (int i = 0; i < listSize; i++)
+	for (int i = 0; i < list_size; i++)
 	{
 		if (list[i]->hit(ray, t_min, closest_so_far, temp_rec))
 		{
