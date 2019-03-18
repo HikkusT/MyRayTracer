@@ -3,7 +3,7 @@
 
 struct HitRecord
 {
-	float t;
+	float distance;
 	Vec3f point;
 	Vec3f normal;
 };

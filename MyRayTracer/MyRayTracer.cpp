@@ -9,14 +9,7 @@
 
 using namespace std;
 
-bool hitSphere(const Vec3f &center, const float &radius, const Ray &ray)
-{
-	Vec3f oc = center - ray.origin;
-	Vec3f proj = ray.getPoint(dot(oc, ray.direction));
-	return (proj - center).length() <= radius * radius;
-}
-
-Vec3f getColor(Ray ray, Hitable *world)
+Vec3f get_pixel(Ray ray, Hitable* world)
 {
 	//Check Intersections
 	HitRecord rec;
@@ -37,10 +30,10 @@ void render()
 	vector<Vec3f> framebuffer(width * height);
 
 	//World
-	Hitable *list[2];
+	Hitable* list[2];
 	list[0] = new Sphere(Vec3f(0, 0, -1), 0.5);
 	list[1] = new Sphere(Vec3f(0, -100.5, -1), 100);
-	Hitable *world = new HitableList(list, 2);
+	Hitable* world = new HitableList(list, 2);
 
 	//Main loop
 	for (int i = 0; i < height; i++)
@@ -53,7 +46,7 @@ void render()
 			//TODO: Change normalize
 			Vec3f dir = Vec3f(x, y, -1).normalize();
 			Ray ray(Vec3f(0, 0, 0), dir);
-			framebuffer[i * width + j] = getColor(ray, world);
+			framebuffer[i * width + j] = get_pixel(ray, world);
 		}
 
 	//Creating Image

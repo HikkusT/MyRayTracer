@@ -10,22 +10,22 @@ public:
 	HitableList() {}
 	HitableList(Hitable **l, int n) : list(l), listSize(n) {}
 
-	virtual bool hit(const Ray &ray, float tMin, float tMax, HitRecord &record) const;
+	virtual bool hit(const Ray &ray, float t_min, float t_max, HitRecord &record) const;
 };
 
-bool HitableList::hit(const Ray &ray, float tMin, float tMax, HitRecord &record) const
+bool HitableList::hit(const Ray &ray, float t_min, float t_max, HitRecord &record) const
 {
 	HitRecord temp_rec;
-	bool hitAnything = false;
-	double closestSoFar = tMax;
+	bool hit_anything = false;
+	float closest_so_far = t_max;
 	for (int i = 0; i < listSize; i++)
 	{
-		if (list[i]->hit(ray, tMin, closestSoFar, temp_rec))
+		if (list[i]->hit(ray, t_min, closest_so_far, temp_rec))
 		{
-			hitAnything = true;
-			closestSoFar = temp_rec.t;
+			hit_anything = true;
+			closest_so_far = temp_rec.distance;
 			record = temp_rec;
 		}
 	}
-	return hitAnything;
+	return hit_anything;
 }
