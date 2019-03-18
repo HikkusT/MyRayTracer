@@ -153,6 +153,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="ray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyRayTracer.cpp" />
