@@ -14,5 +14,5 @@ public:
 		, direction(b) 
 	{}
 
-	Vec3f get_point(float t) const { return origin + direction * t;  }
+	Vec3f get_point(float t) const { return origin + t * direction;  }
 };

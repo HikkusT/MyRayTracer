@@ -11,12 +11,17 @@
 
 using namespace std;
 
+float random()
+{
+	return rand() / float(RAND_MAX);
+}
+
 Vec3f get_pixel(Ray ray, Hitable* world)
 {
 	//Check Intersections
 	HitRecord rec;
 	if (world->hit(ray, 0, FLT_MAX, rec))
-		return Vec3f(rec.normal.x + 1, rec.normal.y + 1, rec.normal.z + 1) * 0.5;
+		return 0.5 * Vec3f(rec.normal.x + 1, rec.normal.y + 1, rec.normal.z + 1);
 
 	//Skybox
 	float t = 0.5 * (ray.direction.y + 1.0);
@@ -48,14 +53,14 @@ void render()
 			for (int k = 0; k < samples; k++)
 			{
 				//Invert y to make it pointing upwards
-				float u = ((2 * (j + (rand()/ float(RAND_MAX))) / float(width) - 1));
-				float v = -((2 * (i + (rand() / float(RAND_MAX))) / float(height) - 1));
+				float u = ((2 * (j + random()) / float(width) - 1));
+				float v = -((2 * (i + random()) / float(height) - 1));
 
 				Ray ray = camera.get_ray(u, v);
-				col = col + get_pixel(ray, world);
+				col += get_pixel(ray, world);
 			}
 
-			col = col * (1 / float(samples));
+			col /= float(samples);
 			framebuffer[i * width + j] = col;
 		}
 
