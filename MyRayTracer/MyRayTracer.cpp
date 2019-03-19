@@ -11,21 +11,40 @@
 
 using namespace std;
 
+Vec3f color_correct(Vec3f color)
+{
+	return Vec3f(sqrt(color.x), sqrt(color.y), sqrt(color.z));
+}
+
 float random()
 {
 	return rand() / float(RAND_MAX);
+}
+
+Vec3f random_in_unit_sphere()
+{
+	Vec3f p;
+	do
+	{
+		p = 2 * Vec3f(random(), random(), random()) - Vec3f(1, 1, 1);
+	} while (p.norm() >= 1);
+	return p;
 }
 
 Vec3f get_pixel(Ray ray, Hitable* world)
 {
 	//Check Intersections
 	HitRecord rec;
-	if (world->hit(ray, 0, FLT_MAX, rec))
-		return 0.5 * Vec3f(rec.normal.x + 1, rec.normal.y + 1, rec.normal.z + 1);
+	if (world->hit(ray, 0.001, FLT_MAX, rec))
+	{
+		//return 0.5 * Vec3f(rec.normal.x + 1, rec.normal.y + 1, rec.normal.z + 1);
+		Vec3f target = rec.point + rec.normal + random_in_unit_sphere();
+		return 0.5 * get_pixel(Ray(rec.point, target - rec.point), world);
+	}
 
 	//Skybox
 	float t = 0.5 * (ray.direction.y + 1.0);
-	return Vec3f(1, 0, 1) * (1 - t) + Vec3f(0, 0, 0) * t;
+	return Vec3f(0.6274, 0, 0.3137) * (1 - t) + Vec3f(0, 0, 0) * t;
 }
 
 void render()
@@ -61,7 +80,7 @@ void render()
 			}
 
 			col /= float(samples);
-			framebuffer[i * width + j] = col;
+			framebuffer[i * width + j] = color_correct(col);
 		}
 
 	//Creating Image

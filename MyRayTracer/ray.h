@@ -11,7 +11,7 @@ public:
 	{}
 	Ray(const Vec3f& a, const Vec3f& b) 
 		: origin(a)
-		, direction(b) 
+		, direction(b.unit_vector()) 
 	{}
 
 	Vec3f get_point(float t) const { return origin + t * direction;  }

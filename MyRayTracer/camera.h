@@ -21,7 +21,7 @@ public:
 		float x = u * tan(field_of_view / 2.) * aspect;
 		float y = v * tan(field_of_view / 2.);
 
-		Vec3f dir = Vec3f(x, y, -1).unit_vector();
+		Vec3f dir = Vec3f(x, y, -1);
 		return Ray(position, dir);
 	}
 };
